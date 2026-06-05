@@ -168,7 +168,10 @@ def search_songs(
 
     for song in songs:
         value = str(song.get(field, "")).lower()
-        if value and value in q:
+        # Fix: check if the query is contained in the field value, not the
+        # other way around. Previously `value in q` only matched when you
+        # typed the song's entire field text, so partial searches were hidden.
+        if value and q in value:
             filtered.append(song)
 
     return filtered
